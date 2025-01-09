@@ -24,4 +24,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\EditRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

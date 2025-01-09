@@ -1,4 +1,5 @@
 using System.Reflection;
+using LaboratoryPractice.Views;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -6,6 +7,8 @@ namespace LaboratoryPractice
 {
     public partial class MainForm : Form
     {
+        private bool isAnalysisSuccessful = false; // Флаг для отслеживания состояния анализа
+
         public MainForm()
         {
             InitializeComponent();
@@ -13,45 +16,64 @@ namespace LaboratoryPractice
 
         private void lowLevelCalculate_Click(object sender, EventArgs e)
         {
-            try
+            // Проверка первого числа
+            if (!int.TryParse(inputLowLevelFirst.Text, out int a))
             {
-                // Получение входных значений
-                int a = int.Parse(inputLowLevelFirst.Text);
-                int b = int.Parse(inputLowLevelSecond.Text);
-                MessageBox.Show($"{inputLowLevelFirst.Text}/{inputLowLevelSecond.Text}");
-
-                // Динамическая загрузка библиотеки
-                Assembly asm = Assembly.LoadFrom("AsmFunc.dll");
-
-                // Получение типа класса Func из библиотеки
-                Type myType = asm.GetType("AsmFunc.Func", true);
-
-                // Создание экземпляра класса Func
-                object obj = Activator.CreateInstance(myType);
-
-                // Получение метода Divide
-                MethodInfo method = myType.GetMethod("Divide");
-
-                // Вызов метода Divide с параметрами
-                object result = method.Invoke(obj, new object[] { a, b });
-
-                // Отображение результата
-                outputLowLevelResult.Text = result.ToString();
+                MessageBox.Show(
+                    "Пожалуйста, введите корректное число в первое поле.",
+                    "Ошибка ввода",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return;
             }
-            catch (DivideByZeroException ex)
+
+            // Проверка второго числа
+            if (!int.TryParse(inputLowLevelSecond.Text, out int b))
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(
+                    "Пожалуйста, введите корректное число во второе поле.",
+                    "Ошибка ввода",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return;
             }
-            catch (Exception ex)
+
+            // Проверка деления на ноль
+            if (b == 0)
             {
-                MessageBox.Show($"Ошибка: {ex.Message}");
+                MessageBox.Show(
+                    "Деление на ноль невозможно. Пожалуйста, введите ненулевое значение во второе поле.",
+                    "Ошибка деления",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
             }
+
+            // Динамическая загрузка библиотеки
+            Assembly asm = Assembly.LoadFrom("AsmFunc.dll");
+
+            // Получение типа класса Func из библиотеки
+            Type myType = asm.GetType("AsmFunc.Func", true);
+
+            // Создание экземпляра класса Func
+            object obj = Activator.CreateInstance(myType);
+
+            // Получение метода Divide
+            MethodInfo method = myType.GetMethod("Divide");
+
+            // Вызов метода Divide с параметрами
+            object result = method.Invoke(obj, new object[] { a, b });
+
+            // Отображение результата
+            outputLowLevelResult.Text = result.ToString();
         }
 
         private void analyzeBuild_Click(object sender, EventArgs e)
         {
             string userCode = inputAnalyze.Text;
-            outputAnalyze.Clear();
 
             try
             {
@@ -70,6 +92,8 @@ namespace LaboratoryPractice
                         string errorMessage = $"Номер строки {line}. Номер ошибки: {diagnostic.Id}, '{diagnostic.GetMessage()}'";
                         outputAnalyze.AppendText(errorMessage + Environment.NewLine);
                     }
+
+                    isAnalysisSuccessful = false; // Если есть ошибки, анализ неуспешен
                     return;
                 }
 
@@ -77,27 +101,47 @@ namespace LaboratoryPractice
                 var whileStatement = root.DescendantNodes().OfType<WhileStatementSyntax>().FirstOrDefault();
                 if (whileStatement == null)
                 {
-                    MessageBox.Show("Введите цикл while!");
+                    MessageBox.Show(
+                        "Введите цикл while!",
+                        "Предупреждение",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+
+                    isAnalysisSuccessful = false; // Если нет цикла while, анализ неуспешен
                     return;
                 }
 
                 // Если ошибок нет
                 outputAnalyze.Text = "Ошибок не обнаружено";
+                isAnalysisSuccessful = true; // Успешный анализ
             }
             catch (Exception ex)
             {
                 outputAnalyze.Text = "Произошла ошибка анализа: " + ex.Message;
+                isAnalysisSuccessful = false; // В случае исключения анализ неуспешен
             }
         }
 
         private void buttonAnalyzeCheck_Click(object sender, EventArgs e)
         {
+            if (!isAnalysisSuccessful)
+            {
+                // Если анализ не был выполнен или есть ошибки
+                MessageBox.Show(
+                    "Пожалуйста, сначала выполните успешную сборку, нажав на кнопку 'Сборка'.",
+                    "Предупреждение",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
             string userCode = inputAnalyze.Text;
-            outputAnalyze.Clear();
 
             try
             {
-                // Парсим код в синтаксическое дерево
+                // Логика проверки выполнения цикла while (как в вашем коде)
                 var syntaxTree = CSharpSyntaxTree.ParseText(userCode);
                 var root = syntaxTree.GetRoot();
 
@@ -105,24 +149,17 @@ namespace LaboratoryPractice
                 var whileStatement = root.DescendantNodes().OfType<WhileStatementSyntax>().FirstOrDefault();
                 if (whileStatement == null)
                 {
-                    MessageBox.Show("Введите цикл while!");
+                    MessageBox.Show(
+                        "Введите цикл while!",
+                        "Предупреждение",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
                     return;
                 }
 
                 // Получаем условие цикла
                 var condition = whileStatement.Condition.ToString();
-
-                // Простая проверка на статичные значения
-                if (condition == "true")
-                {
-                    outputAnalyze.Text = "Цикл выполнится бесконечно.";
-                    return;
-                }
-                else if (condition == "false")
-                {
-                    outputAnalyze.Text = "Цикл не выполнится ни разу.";
-                    return;
-                }
 
                 // Попробуем выполнить начальные действия и проверить условие
                 var initialStatements = root.DescendantNodes().OfType<LocalDeclarationStatementSyntax>();
@@ -144,16 +181,31 @@ namespace LaboratoryPractice
                 // Проверяем условие
                 if (EvaluateCondition(condition, variables))
                 {
-                    outputAnalyze.Text = "Цикл выполнится хотя бы раз.";
+                    MessageBox.Show(
+                        "Цикл выполнится хотя бы раз.",
+                        "Успешно",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
                 }
                 else
                 {
-                    outputAnalyze.Text = "Цикл не выполнится ни разу.";
+                    MessageBox.Show(
+                        "Цикл не выполнится ни разу.",
+                        "Успешно",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
                 }
             }
             catch (Exception ex)
             {
-                outputAnalyze.Text = "Произошла ошибка анализа: " + ex.Message;
+                MessageBox.Show(
+                    "Произошла ошибка анализа: " + ex.Message,
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 
@@ -176,6 +228,24 @@ namespace LaboratoryPractice
             {
                 return false; // Если условие не удалось обработать
             }
+        }
+
+        private void inputAnalyze_TextChanged(object sender, EventArgs e)
+        {
+            outputAnalyze.Clear();
+            isAnalysisSuccessful = false; // Сбрасываем флаг при изменении текста
+        }
+
+        private void buttonAddRecord_Click(object sender, EventArgs e)
+        {
+            Form addRecordForm = new AddRecord();
+            addRecordForm.Show();
+        }
+
+        private void buttonEditRecord_Click(object sender, EventArgs e)
+        {
+            Form editRecordForm = new EditRecord();
+            editRecordForm.Show();
         }
     }
 }

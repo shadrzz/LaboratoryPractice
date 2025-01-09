@@ -1,6 +1,6 @@
 ﻿namespace LaboratoryPractice.Views
 {
-    partial class AddRecord
+    partial class EditRecord
     {
         /// <summary>
         /// Required designer variable.
@@ -99,10 +99,10 @@
             button7.Name = "button7";
             button7.Size = new Size(108, 33);
             button7.TabIndex = 7;
-            button7.Text = "Добавить";
+            button7.Text = "Изменить";
             button7.UseVisualStyleBackColor = true;
             // 
-            // AddRecord
+            // EditRecord
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -114,9 +114,9 @@
             Controls.Add(label2);
             Controls.Add(textBox1);
             Controls.Add(label1);
-            Name = "AddRecord";
+            Name = "EditRecord";
             Padding = new Padding(50, 50, 50, 25);
-            Text = "Добавить запись";
+            Text = "Изменить запись";
             ResumeLayout(false);
             PerformLayout();
         }

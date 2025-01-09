@@ -30,20 +30,16 @@
         {
             groupBoxWorkWithFile = new GroupBox();
             buttonAddRecord = new Button();
-            buttonEditRecord = new Button();
-            buttonDeleteRow = new Button();
             data = new DataGridView();
             AddressResource = new DataGridViewTextBoxColumn();
             AccessMode = new DataGridViewComboBoxColumn();
             AccessDate = new DataGridViewTextBoxColumn();
-            inputRowNumber = new TextBox();
-            labelRowNumber = new Label();
             buttonOpenFileNotepad = new Button();
             buttonOutputData = new Button();
             buttonSelectFile = new Button();
             groupBoxLowLevel = new GroupBox();
-            outputLowLevelResult = new TextBox();
             labelOutputLowLevelResult = new Label();
+            outputLowLevelResult = new TextBox();
             buttonLowLevelCalculate = new Button();
             inputLowLevelSecond = new ComboBox();
             labelLowLevelSecond = new Label();
@@ -53,10 +49,13 @@
             outputLog = new RichTextBox();
             groupBoxAnalyze = new GroupBox();
             buttonAnalyzeCheck = new Button();
-            buttonAnalyzeRun = new Button();
             outputAnalyze = new RichTextBox();
             inputAnalyze = new RichTextBox();
             buttonAnalyzeBuild = new Button();
+            labelRowNumber = new Label();
+            inputRowNumber = new TextBox();
+            buttonDeleteRow = new Button();
+            buttonEditRecord = new Button();
             groupBoxWorkWithFile.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)data).BeginInit();
             groupBoxLowLevel.SuspendLayout();
@@ -92,26 +91,7 @@
             buttonAddRecord.TabIndex = 8;
             buttonAddRecord.Text = "Добавить запись";
             buttonAddRecord.UseVisualStyleBackColor = true;
-            // 
-            // buttonEditRecord
-            // 
-            buttonEditRecord.Location = new Point(252, 326);
-            buttonEditRecord.Margin = new Padding(3, 10, 3, 0);
-            buttonEditRecord.Name = "buttonEditRecord";
-            buttonEditRecord.Size = new Size(130, 23);
-            buttonEditRecord.TabIndex = 7;
-            buttonEditRecord.Text = "Изменить запись";
-            buttonEditRecord.UseVisualStyleBackColor = true;
-            // 
-            // buttonDeleteRow
-            // 
-            buttonDeleteRow.Location = new Point(252, 293);
-            buttonDeleteRow.Margin = new Padding(3, 10, 3, 0);
-            buttonDeleteRow.Name = "buttonDeleteRow";
-            buttonDeleteRow.Size = new Size(130, 23);
-            buttonDeleteRow.TabIndex = 6;
-            buttonDeleteRow.Text = "Удалить строку";
-            buttonDeleteRow.UseVisualStyleBackColor = true;
+            buttonAddRecord.Click += buttonAddRecord_Click;
             // 
             // data
             // 
@@ -145,24 +125,6 @@
             AccessDate.Name = "AccessDate";
             AccessDate.ReadOnly = true;
             // 
-            // inputRowNumber
-            // 
-            inputRowNumber.Location = new Point(252, 260);
-            inputRowNumber.Margin = new Padding(0);
-            inputRowNumber.Name = "inputRowNumber";
-            inputRowNumber.Size = new Size(130, 23);
-            inputRowNumber.TabIndex = 4;
-            // 
-            // labelRowNumber
-            // 
-            labelRowNumber.AutoSize = true;
-            labelRowNumber.Location = new Point(252, 242);
-            labelRowNumber.Margin = new Padding(10, 10, 10, 3);
-            labelRowNumber.Name = "labelRowNumber";
-            labelRowNumber.Size = new Size(130, 15);
-            labelRowNumber.TabIndex = 3;
-            labelRowNumber.Text = "Введите номер строки";
-            // 
             // buttonOpenFileNotepad
             // 
             buttonOpenFileNotepad.Location = new Point(276, 26);
@@ -195,8 +157,8 @@
             // 
             // groupBoxLowLevel
             // 
-            groupBoxLowLevel.Controls.Add(outputLowLevelResult);
             groupBoxLowLevel.Controls.Add(labelOutputLowLevelResult);
+            groupBoxLowLevel.Controls.Add(outputLowLevelResult);
             groupBoxLowLevel.Controls.Add(buttonLowLevelCalculate);
             groupBoxLowLevel.Controls.Add(inputLowLevelSecond);
             groupBoxLowLevel.Controls.Add(labelLowLevelSecond);
@@ -208,32 +170,32 @@
             groupBoxLowLevel.Size = new Size(402, 197);
             groupBoxLowLevel.TabIndex = 2;
             groupBoxLowLevel.TabStop = false;
-            groupBoxLowLevel.Text = "Низкоуровневая функция";
-            // 
-            // outputLowLevelResult
-            // 
-            outputLowLevelResult.Location = new Point(176, 142);
-            outputLowLevelResult.Margin = new Padding(0, 10, 0, 0);
-            outputLowLevelResult.Name = "outputLowLevelResult";
-            outputLowLevelResult.Size = new Size(130, 23);
-            outputLowLevelResult.TabIndex = 9;
+            groupBoxLowLevel.Text = "Низкоуровневая функция (деление)";
             // 
             // labelOutputLowLevelResult
             // 
             labelOutputLowLevelResult.AutoSize = true;
-            labelOutputLowLevelResult.Location = new Point(87, 145);
-            labelOutputLowLevelResult.Margin = new Padding(0, 10, 0, 0);
+            labelOutputLowLevelResult.Location = new Point(182, 113);
+            labelOutputLowLevelResult.Margin = new Padding(0);
             labelOutputLowLevelResult.Name = "labelOutputLowLevelResult";
             labelOutputLowLevelResult.Size = new Size(63, 15);
-            labelOutputLowLevelResult.TabIndex = 6;
+            labelOutputLowLevelResult.TabIndex = 9;
             labelOutputLowLevelResult.Text = "Результат:";
+            // 
+            // outputLowLevelResult
+            // 
+            outputLowLevelResult.Location = new Point(184, 130);
+            outputLowLevelResult.Margin = new Padding(0, 10, 0, 0);
+            outputLowLevelResult.Name = "outputLowLevelResult";
+            outputLowLevelResult.Size = new Size(199, 23);
+            outputLowLevelResult.TabIndex = 9;
             // 
             // buttonLowLevelCalculate
             // 
-            buttonLowLevelCalculate.Location = new Point(138, 105);
+            buttonLowLevelCalculate.Location = new Point(21, 116);
             buttonLowLevelCalculate.Margin = new Padding(0, 10, 0, 0);
             buttonLowLevelCalculate.Name = "buttonLowLevelCalculate";
-            buttonLowLevelCalculate.Size = new Size(108, 27);
+            buttonLowLevelCalculate.Size = new Size(115, 48);
             buttonLowLevelCalculate.TabIndex = 5;
             buttonLowLevelCalculate.Text = "Рассчитать";
             buttonLowLevelCalculate.UseVisualStyleBackColor = true;
@@ -242,16 +204,16 @@
             // inputLowLevelSecond
             // 
             inputLowLevelSecond.FormattingEnabled = true;
-            inputLowLevelSecond.Location = new Point(176, 69);
+            inputLowLevelSecond.Location = new Point(183, 69);
             inputLowLevelSecond.Margin = new Padding(3, 10, 3, 3);
             inputLowLevelSecond.Name = "inputLowLevelSecond";
-            inputLowLevelSecond.Size = new Size(206, 23);
+            inputLowLevelSecond.Size = new Size(200, 23);
             inputLowLevelSecond.TabIndex = 3;
             // 
             // labelLowLevelSecond
             // 
             labelLowLevelSecond.AutoSize = true;
-            labelLowLevelSecond.Location = new Point(13, 72);
+            labelLowLevelSecond.Location = new Point(21, 72);
             labelLowLevelSecond.Name = "labelLowLevelSecond";
             labelLowLevelSecond.Size = new Size(156, 15);
             labelLowLevelSecond.TabIndex = 2;
@@ -260,15 +222,15 @@
             // inputLowLevelFirst
             // 
             inputLowLevelFirst.FormattingEnabled = true;
-            inputLowLevelFirst.Location = new Point(176, 33);
+            inputLowLevelFirst.Location = new Point(183, 33);
             inputLowLevelFirst.Name = "inputLowLevelFirst";
-            inputLowLevelFirst.Size = new Size(206, 23);
+            inputLowLevelFirst.Size = new Size(199, 23);
             inputLowLevelFirst.TabIndex = 1;
             // 
             // labelLowLevelFirst
             // 
             labelLowLevelFirst.AutoSize = true;
-            labelLowLevelFirst.Location = new Point(13, 36);
+            labelLowLevelFirst.Location = new Point(20, 36);
             labelLowLevelFirst.Name = "labelLowLevelFirst";
             labelLowLevelFirst.Size = new Size(157, 15);
             labelLowLevelFirst.TabIndex = 0;
@@ -299,7 +261,6 @@
             // groupBoxAnalyze
             // 
             groupBoxAnalyze.Controls.Add(buttonAnalyzeCheck);
-            groupBoxAnalyze.Controls.Add(buttonAnalyzeRun);
             groupBoxAnalyze.Controls.Add(outputAnalyze);
             groupBoxAnalyze.Controls.Add(inputAnalyze);
             groupBoxAnalyze.Controls.Add(buttonAnalyzeBuild);
@@ -322,16 +283,6 @@
             buttonAnalyzeCheck.UseVisualStyleBackColor = true;
             buttonAnalyzeCheck.Click += buttonAnalyzeCheck_Click;
             // 
-            // buttonAnalyzeRun
-            // 
-            buttonAnalyzeRun.Location = new Point(255, 192);
-            buttonAnalyzeRun.Margin = new Padding(10, 0, 10, 0);
-            buttonAnalyzeRun.Name = "buttonAnalyzeRun";
-            buttonAnalyzeRun.Size = new Size(108, 33);
-            buttonAnalyzeRun.TabIndex = 3;
-            buttonAnalyzeRun.Text = "Run";
-            buttonAnalyzeRun.UseVisualStyleBackColor = true;
-            // 
             // outputAnalyze
             // 
             outputAnalyze.Location = new Point(233, 69);
@@ -350,6 +301,7 @@
             inputAnalyze.Size = new Size(195, 199);
             inputAnalyze.TabIndex = 1;
             inputAnalyze.Text = "";
+            inputAnalyze.TextChanged += inputAnalyze_TextChanged;
             // 
             // buttonAnalyzeBuild
             // 
@@ -358,9 +310,48 @@
             buttonAnalyzeBuild.Name = "buttonAnalyzeBuild";
             buttonAnalyzeBuild.Size = new Size(108, 33);
             buttonAnalyzeBuild.TabIndex = 0;
-            buttonAnalyzeBuild.Text = "Build";
+            buttonAnalyzeBuild.Text = "Сборка";
             buttonAnalyzeBuild.UseVisualStyleBackColor = true;
             buttonAnalyzeBuild.Click += analyzeBuild_Click;
+            // 
+            // labelRowNumber
+            // 
+            labelRowNumber.AutoSize = true;
+            labelRowNumber.Location = new Point(249, 242);
+            labelRowNumber.Margin = new Padding(10, 10, 10, 3);
+            labelRowNumber.Name = "labelRowNumber";
+            labelRowNumber.Size = new Size(133, 15);
+            labelRowNumber.TabIndex = 3;
+            labelRowNumber.Text = "Введите номер строки:";
+            // 
+            // inputRowNumber
+            // 
+            inputRowNumber.Location = new Point(252, 260);
+            inputRowNumber.Margin = new Padding(0);
+            inputRowNumber.Name = "inputRowNumber";
+            inputRowNumber.Size = new Size(130, 23);
+            inputRowNumber.TabIndex = 4;
+            // 
+            // buttonDeleteRow
+            // 
+            buttonDeleteRow.Location = new Point(252, 293);
+            buttonDeleteRow.Margin = new Padding(3, 10, 3, 0);
+            buttonDeleteRow.Name = "buttonDeleteRow";
+            buttonDeleteRow.Size = new Size(130, 23);
+            buttonDeleteRow.TabIndex = 6;
+            buttonDeleteRow.Text = "Удалить строку";
+            buttonDeleteRow.UseVisualStyleBackColor = true;
+            // 
+            // buttonEditRecord
+            // 
+            buttonEditRecord.Location = new Point(252, 326);
+            buttonEditRecord.Margin = new Padding(3, 10, 3, 0);
+            buttonEditRecord.Name = "buttonEditRecord";
+            buttonEditRecord.Size = new Size(130, 23);
+            buttonEditRecord.TabIndex = 7;
+            buttonEditRecord.Text = "Изменить запись";
+            buttonEditRecord.UseVisualStyleBackColor = true;
+            buttonEditRecord.Click += buttonEditRecord_Click;
             // 
             // MainForm
             // 
@@ -392,15 +383,11 @@
         private Button buttonOpenFileNotepad;
         private Button buttonOutputData;
         private Button buttonSelectFile;
-        private TextBox inputRowNumber;
-        private Label labelRowNumber;
         private DataGridView data;
-        private Button buttonDeleteRow;
         private DataGridViewTextBoxColumn AddressResource;
         private DataGridViewComboBoxColumn AccessMode;
         private DataGridViewTextBoxColumn AccessDate;
         private Button buttonAddRecord;
-        private Button buttonEditRecord;
         private GroupBox groupBoxAnalyze;
         private RichTextBox inputAnalyze;
         private Button buttonAnalyzeBuild;
@@ -408,12 +395,16 @@
         private Button buttonAnalyzeRun;
         private RichTextBox outputAnalyze;
         private Label labelLowLevelFirst;
-        private Label labelOutputLowLevelResult;
         private Button buttonLowLevelCalculate;
         private ComboBox inputLowLevelSecond;
         private Label labelLowLevelSecond;
         private ComboBox inputLowLevelFirst;
         private TextBox outputLowLevelResult;
         private RichTextBox outputLog;
+        private Label labelOutputLowLevelResult;
+        private Button buttonEditRecord;
+        private Button buttonDeleteRow;
+        private TextBox inputRowNumber;
+        private Label labelRowNumber;
     }
 }
