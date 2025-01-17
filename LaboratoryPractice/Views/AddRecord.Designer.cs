@@ -34,7 +34,7 @@
             textBox3 = new TextBox();
             label3 = new Label();
             comboBox1 = new ComboBox();
-            button7 = new Button();
+            buttonAddRecord = new Button();
             SuspendLayout();
             // 
             // label1
@@ -92,22 +92,22 @@
             comboBox1.Size = new Size(124, 23);
             comboBox1.TabIndex = 6;
             // 
-            // button7
+            // buttonAddRecord
             // 
-            button7.Location = new Point(126, 211);
-            button7.Margin = new Padding(0);
-            button7.Name = "button7";
-            button7.Size = new Size(108, 33);
-            button7.TabIndex = 7;
-            button7.Text = "Добавить";
-            button7.UseVisualStyleBackColor = true;
+            buttonAddRecord.Location = new Point(126, 211);
+            buttonAddRecord.Margin = new Padding(0);
+            buttonAddRecord.Name = "buttonAddRecord";
+            buttonAddRecord.Size = new Size(108, 33);
+            buttonAddRecord.TabIndex = 7;
+            buttonAddRecord.Text = "Добавить";
+            buttonAddRecord.UseVisualStyleBackColor = true;
             // 
             // AddRecord
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(377, 269);
-            Controls.Add(button7);
+            Controls.Add(buttonAddRecord);
             Controls.Add(comboBox1);
             Controls.Add(textBox3);
             Controls.Add(label3);
@@ -129,6 +129,6 @@
         private TextBox textBox3;
         private Label label3;
         private ComboBox comboBox1;
-        private Button button7;
+        private Button buttonAddRecord;
     }
 }

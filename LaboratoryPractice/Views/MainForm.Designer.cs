@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             groupBoxWorkWithFile = new GroupBox();
-            buttonAddRecord = new Button();
             data = new DataGridView();
-            AddressResource = new DataGridViewTextBoxColumn();
-            AccessMode = new DataGridViewComboBoxColumn();
-            AccessDate = new DataGridViewTextBoxColumn();
+            address = new DataGridViewTextBoxColumn();
+            accessMode = new DataGridViewTextBoxColumn();
+            accessDate = new DataGridViewTextBoxColumn();
+            buttonDeleteRecord = new Button();
+            buttonEditRecord = new Button();
+            buttonAddRecord = new Button();
             buttonOpenFileNotepad = new Button();
             buttonOutputData = new Button();
             buttonSelectFile = new Button();
@@ -45,85 +47,92 @@
             labelLowLevelSecond = new Label();
             inputLowLevelFirst = new ComboBox();
             labelLowLevelFirst = new Label();
-            groupBoxLog = new GroupBox();
-            outputLog = new RichTextBox();
             groupBoxAnalyze = new GroupBox();
             buttonAnalyzeCheck = new Button();
             outputAnalyze = new RichTextBox();
             inputAnalyze = new RichTextBox();
             buttonAnalyzeBuild = new Button();
-            labelRowNumber = new Label();
-            inputRowNumber = new TextBox();
-            buttonDeleteRow = new Button();
-            buttonEditRecord = new Button();
             groupBoxWorkWithFile.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)data).BeginInit();
             groupBoxLowLevel.SuspendLayout();
-            groupBoxLog.SuspendLayout();
             groupBoxAnalyze.SuspendLayout();
             SuspendLayout();
             // 
             // groupBoxWorkWithFile
             // 
-            groupBoxWorkWithFile.Controls.Add(buttonAddRecord);
-            groupBoxWorkWithFile.Controls.Add(buttonEditRecord);
-            groupBoxWorkWithFile.Controls.Add(buttonDeleteRow);
             groupBoxWorkWithFile.Controls.Add(data);
-            groupBoxWorkWithFile.Controls.Add(inputRowNumber);
-            groupBoxWorkWithFile.Controls.Add(labelRowNumber);
+            groupBoxWorkWithFile.Controls.Add(buttonDeleteRecord);
+            groupBoxWorkWithFile.Controls.Add(buttonEditRecord);
+            groupBoxWorkWithFile.Controls.Add(buttonAddRecord);
             groupBoxWorkWithFile.Controls.Add(buttonOpenFileNotepad);
             groupBoxWorkWithFile.Controls.Add(buttonOutputData);
             groupBoxWorkWithFile.Controls.Add(buttonSelectFile);
             groupBoxWorkWithFile.Location = new Point(43, 21);
             groupBoxWorkWithFile.Name = "groupBoxWorkWithFile";
             groupBoxWorkWithFile.Padding = new Padding(10);
-            groupBoxWorkWithFile.Size = new Size(402, 381);
+            groupBoxWorkWithFile.Size = new Size(402, 387);
             groupBoxWorkWithFile.TabIndex = 0;
             groupBoxWorkWithFile.TabStop = false;
             groupBoxWorkWithFile.Text = "Работа с файлом";
             // 
-            // buttonAddRecord
-            // 
-            buttonAddRecord.Location = new Point(20, 260);
-            buttonAddRecord.Margin = new Padding(3, 10, 3, 0);
-            buttonAddRecord.Name = "buttonAddRecord";
-            buttonAddRecord.Size = new Size(130, 23);
-            buttonAddRecord.TabIndex = 8;
-            buttonAddRecord.Text = "Добавить запись";
-            buttonAddRecord.UseVisualStyleBackColor = true;
-            buttonAddRecord.Click += buttonAddRecord_Click;
-            // 
             // data
             // 
             data.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            data.Columns.AddRange(new DataGridViewColumn[] { AddressResource, AccessMode, AccessDate });
-            data.Location = new Point(20, 79);
-            data.Margin = new Padding(3, 10, 3, 3);
+            data.Columns.AddRange(new DataGridViewColumn[] { address, accessMode, accessDate });
+            data.Location = new Point(20, 85);
             data.Name = "data";
             data.ReadOnly = true;
-            data.Size = new Size(362, 150);
-            data.TabIndex = 5;
+            data.Size = new Size(361, 187);
+            data.TabIndex = 11;
             // 
-            // AddressResource
+            // address
             // 
-            AddressResource.HeaderText = "Адрес ресурса";
-            AddressResource.Name = "AddressResource";
-            AddressResource.ReadOnly = true;
+            address.HeaderText = "Адрес ресурса в сети Интернет";
+            address.Name = "address";
+            address.ReadOnly = true;
             // 
-            // AccessMode
+            // accessMode
             // 
-            AccessMode.HeaderText = "Режим доступа";
-            AccessMode.Items.AddRange(new object[] { "Свободный", "Закрытый" });
-            AccessMode.Name = "AccessMode";
-            AccessMode.ReadOnly = true;
-            AccessMode.Resizable = DataGridViewTriState.True;
-            AccessMode.SortMode = DataGridViewColumnSortMode.Automatic;
+            accessMode.HeaderText = "Режим доступа";
+            accessMode.Name = "accessMode";
+            accessMode.ReadOnly = true;
             // 
-            // AccessDate
+            // accessDate
             // 
-            AccessDate.HeaderText = "Дата доступа";
-            AccessDate.Name = "AccessDate";
-            AccessDate.ReadOnly = true;
+            accessDate.HeaderText = "Дата доступа";
+            accessDate.Name = "accessDate";
+            accessDate.ReadOnly = true;
+            // 
+            // buttonDeleteRecord
+            // 
+            buttonDeleteRecord.Location = new Point(19, 325);
+            buttonDeleteRecord.Margin = new Padding(3, 10, 3, 0);
+            buttonDeleteRecord.Name = "buttonDeleteRecord";
+            buttonDeleteRecord.Size = new Size(362, 30);
+            buttonDeleteRecord.TabIndex = 10;
+            buttonDeleteRecord.Text = "Удалить запись из БД";
+            buttonDeleteRecord.UseVisualStyleBackColor = true;
+            // 
+            // buttonEditRecord
+            // 
+            buttonEditRecord.Location = new Point(212, 285);
+            buttonEditRecord.Margin = new Padding(3, 10, 3, 0);
+            buttonEditRecord.Name = "buttonEditRecord";
+            buttonEditRecord.Size = new Size(170, 30);
+            buttonEditRecord.TabIndex = 9;
+            buttonEditRecord.Text = "Изменить запись из БД";
+            buttonEditRecord.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddRecord
+            // 
+            buttonAddRecord.Location = new Point(19, 285);
+            buttonAddRecord.Margin = new Padding(3, 10, 3, 0);
+            buttonAddRecord.Name = "buttonAddRecord";
+            buttonAddRecord.Size = new Size(170, 30);
+            buttonAddRecord.TabIndex = 8;
+            buttonAddRecord.Text = "Добавить запись в БД";
+            buttonAddRecord.UseVisualStyleBackColor = true;
+            buttonAddRecord.Click += buttonAddRecord_Click;
             // 
             // buttonOpenFileNotepad
             // 
@@ -134,6 +143,7 @@
             buttonOpenFileNotepad.TabIndex = 2;
             buttonOpenFileNotepad.Text = "Открыть файл в блокноте";
             buttonOpenFileNotepad.UseVisualStyleBackColor = true;
+            buttonOpenFileNotepad.Click += buttonOpenFileNotepad_Click;
             // 
             // buttonOutputData
             // 
@@ -144,6 +154,7 @@
             buttonOutputData.TabIndex = 1;
             buttonOutputData.Text = "Вывести данные";
             buttonOutputData.UseVisualStyleBackColor = true;
+            buttonOutputData.Click += buttonOutputData_Click;
             // 
             // buttonSelectFile
             // 
@@ -152,8 +163,9 @@
             buttonSelectFile.Name = "buttonSelectFile";
             buttonSelectFile.Size = new Size(108, 33);
             buttonSelectFile.TabIndex = 0;
-            buttonSelectFile.Text = "Выбрать файл";
+            buttonSelectFile.Text = "Выбрать CSV";
             buttonSelectFile.UseVisualStyleBackColor = true;
+            buttonSelectFile.Click += buttonSelectFile_Click;
             // 
             // groupBoxLowLevel
             // 
@@ -164,7 +176,8 @@
             groupBoxLowLevel.Controls.Add(labelLowLevelSecond);
             groupBoxLowLevel.Controls.Add(inputLowLevelFirst);
             groupBoxLowLevel.Controls.Add(labelLowLevelFirst);
-            groupBoxLowLevel.Location = new Point(43, 418);
+            groupBoxLowLevel.Location = new Point(255, 431);
+            groupBoxLowLevel.Margin = new Padding(3, 20, 3, 3);
             groupBoxLowLevel.Name = "groupBoxLowLevel";
             groupBoxLowLevel.Padding = new Padding(10, 20, 10, 10);
             groupBoxLowLevel.Size = new Size(402, 197);
@@ -199,7 +212,7 @@
             buttonLowLevelCalculate.TabIndex = 5;
             buttonLowLevelCalculate.Text = "Рассчитать";
             buttonLowLevelCalculate.UseVisualStyleBackColor = true;
-            buttonLowLevelCalculate.Click += lowLevelCalculate_Click;
+            buttonLowLevelCalculate.Click += buttonLowLevelCalculate_Click;
             // 
             // inputLowLevelSecond
             // 
@@ -236,28 +249,6 @@
             labelLowLevelFirst.TabIndex = 0;
             labelLowLevelFirst.Text = "Выберите первое значение";
             // 
-            // groupBoxLog
-            // 
-            groupBoxLog.Controls.Add(outputLog);
-            groupBoxLog.Location = new Point(479, 418);
-            groupBoxLog.Name = "groupBoxLog";
-            groupBoxLog.Padding = new Padding(10);
-            groupBoxLog.Size = new Size(402, 197);
-            groupBoxLog.TabIndex = 3;
-            groupBoxLog.TabStop = false;
-            groupBoxLog.Text = "Логирование";
-            // 
-            // outputLog
-            // 
-            outputLog.Location = new Point(10, 26);
-            outputLog.Margin = new Padding(0);
-            outputLog.Name = "outputLog";
-            outputLog.ReadOnly = true;
-            outputLog.ScrollBars = RichTextBoxScrollBars.Vertical;
-            outputLog.Size = new Size(382, 161);
-            outputLog.TabIndex = 5;
-            outputLog.Text = "";
-            // 
             // groupBoxAnalyze
             // 
             groupBoxAnalyze.Controls.Add(buttonAnalyzeCheck);
@@ -267,14 +258,14 @@
             groupBoxAnalyze.Location = new Point(479, 21);
             groupBoxAnalyze.Name = "groupBoxAnalyze";
             groupBoxAnalyze.Padding = new Padding(10);
-            groupBoxAnalyze.Size = new Size(402, 381);
+            groupBoxAnalyze.Size = new Size(402, 387);
             groupBoxAnalyze.TabIndex = 9;
             groupBoxAnalyze.TabStop = false;
             groupBoxAnalyze.Text = "Анализатор";
             // 
             // buttonAnalyzeCheck
             // 
-            buttonAnalyzeCheck.Location = new Point(13, 242);
+            buttonAnalyzeCheck.Location = new Point(13, 265);
             buttonAnalyzeCheck.Margin = new Padding(10, 0, 10, 0);
             buttonAnalyzeCheck.Name = "buttonAnalyzeCheck";
             buttonAnalyzeCheck.Size = new Size(195, 50);
@@ -298,7 +289,7 @@
             // 
             inputAnalyze.Location = new Point(13, 26);
             inputAnalyze.Name = "inputAnalyze";
-            inputAnalyze.Size = new Size(195, 199);
+            inputAnalyze.Size = new Size(195, 216);
             inputAnalyze.TabIndex = 1;
             inputAnalyze.Text = "";
             inputAnalyze.TextChanged += inputAnalyze_TextChanged;
@@ -312,65 +303,23 @@
             buttonAnalyzeBuild.TabIndex = 0;
             buttonAnalyzeBuild.Text = "Сборка";
             buttonAnalyzeBuild.UseVisualStyleBackColor = true;
-            buttonAnalyzeBuild.Click += analyzeBuild_Click;
-            // 
-            // labelRowNumber
-            // 
-            labelRowNumber.AutoSize = true;
-            labelRowNumber.Location = new Point(249, 242);
-            labelRowNumber.Margin = new Padding(10, 10, 10, 3);
-            labelRowNumber.Name = "labelRowNumber";
-            labelRowNumber.Size = new Size(133, 15);
-            labelRowNumber.TabIndex = 3;
-            labelRowNumber.Text = "Введите номер строки:";
-            // 
-            // inputRowNumber
-            // 
-            inputRowNumber.Location = new Point(252, 260);
-            inputRowNumber.Margin = new Padding(0);
-            inputRowNumber.Name = "inputRowNumber";
-            inputRowNumber.Size = new Size(130, 23);
-            inputRowNumber.TabIndex = 4;
-            // 
-            // buttonDeleteRow
-            // 
-            buttonDeleteRow.Location = new Point(252, 293);
-            buttonDeleteRow.Margin = new Padding(3, 10, 3, 0);
-            buttonDeleteRow.Name = "buttonDeleteRow";
-            buttonDeleteRow.Size = new Size(130, 23);
-            buttonDeleteRow.TabIndex = 6;
-            buttonDeleteRow.Text = "Удалить строку";
-            buttonDeleteRow.UseVisualStyleBackColor = true;
-            // 
-            // buttonEditRecord
-            // 
-            buttonEditRecord.Location = new Point(252, 326);
-            buttonEditRecord.Margin = new Padding(3, 10, 3, 0);
-            buttonEditRecord.Name = "buttonEditRecord";
-            buttonEditRecord.Size = new Size(130, 23);
-            buttonEditRecord.TabIndex = 7;
-            buttonEditRecord.Text = "Изменить запись";
-            buttonEditRecord.UseVisualStyleBackColor = true;
-            buttonEditRecord.Click += buttonEditRecord_Click;
+            buttonAnalyzeBuild.Click += buttonAnalyzeBuild_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(937, 638);
+            ClientSize = new Size(928, 660);
             Controls.Add(groupBoxAnalyze);
-            Controls.Add(groupBoxLog);
             Controls.Add(groupBoxLowLevel);
             Controls.Add(groupBoxWorkWithFile);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "MainForm";
             Text = " ";
             groupBoxWorkWithFile.ResumeLayout(false);
-            groupBoxWorkWithFile.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)data).EndInit();
             groupBoxLowLevel.ResumeLayout(false);
             groupBoxLowLevel.PerformLayout();
-            groupBoxLog.ResumeLayout(false);
             groupBoxAnalyze.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -379,14 +328,9 @@
 
         private GroupBox groupBoxWorkWithFile;
         private GroupBox groupBoxLowLevel;
-        private GroupBox groupBoxLog;
         private Button buttonOpenFileNotepad;
         private Button buttonOutputData;
         private Button buttonSelectFile;
-        private DataGridView data;
-        private DataGridViewTextBoxColumn AddressResource;
-        private DataGridViewComboBoxColumn AccessMode;
-        private DataGridViewTextBoxColumn AccessDate;
         private Button buttonAddRecord;
         private GroupBox groupBoxAnalyze;
         private RichTextBox inputAnalyze;
@@ -400,11 +344,12 @@
         private Label labelLowLevelSecond;
         private ComboBox inputLowLevelFirst;
         private TextBox outputLowLevelResult;
-        private RichTextBox outputLog;
         private Label labelOutputLowLevelResult;
+        private Button buttonDeleteRecord;
         private Button buttonEditRecord;
-        private Button buttonDeleteRow;
-        private TextBox inputRowNumber;
-        private Label labelRowNumber;
+        private DataGridView data;
+        private DataGridViewTextBoxColumn address;
+        private DataGridViewTextBoxColumn accessMode;
+        private DataGridViewTextBoxColumn accessDate;
     }
 }

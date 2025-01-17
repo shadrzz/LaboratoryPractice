@@ -1,4 +1,7 @@
 using System.Reflection;
+using System.Windows.Forms;
+using LaboratoryPractice.Controllers;
+using LaboratoryPractice.Models;
 using LaboratoryPractice.Views;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -7,120 +10,49 @@ namespace LaboratoryPractice
 {
     public partial class MainForm : Form
     {
-        private bool isAnalysisSuccessful = false; // Флаг для отслеживания состояния анализа
+        private bool isAnalysisSuccessful = false;
+        private string selectedFilePath = string.Empty;
+        private List<FileModel> files = new List<FileModel>();
 
         public MainForm()
         {
             InitializeComponent();
         }
 
-        private void lowLevelCalculate_Click(object sender, EventArgs e)
+        private void buttonLowLevelCalculate_Click(object sender, EventArgs e)
         {
-            // Проверка первого числа
-            if (!int.TryParse(inputLowLevelFirst.Text, out int a))
+            /// Получение данных из текстовых полей
+            string inputFirst = inputLowLevelFirst.Text;
+            string inputSecond = inputLowLevelSecond.Text;
+
+            // Вызов метода контроллера для вычисления
+            var (isValid, result, errorMessage) = LowLevelCalculatorController.Calculate(inputFirst, inputSecond);
+
+            if (!isValid)
             {
+                // Отображение сообщения об ошибке
                 MessageBox.Show(
-                    "Пожалуйста, введите корректное число в первое поле.",
-                    "Ошибка ввода",
+                    errorMessage,
+                    "Ошибка",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
                 return;
             }
-
-            // Проверка второго числа
-            if (!int.TryParse(inputLowLevelSecond.Text, out int b))
-            {
-                MessageBox.Show(
-                    "Пожалуйста, введите корректное число во второе поле.",
-                    "Ошибка ввода",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-                return;
-            }
-
-            // Проверка деления на ноль
-            if (b == 0)
-            {
-                MessageBox.Show(
-                    "Деление на ноль невозможно. Пожалуйста, введите ненулевое значение во второе поле.",
-                    "Ошибка деления",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-
-            // Динамическая загрузка библиотеки
-            Assembly asm = Assembly.LoadFrom("AsmFunc.dll");
-
-            // Получение типа класса Func из библиотеки
-            Type myType = asm.GetType("AsmFunc.Func", true);
-
-            // Создание экземпляра класса Func
-            object obj = Activator.CreateInstance(myType);
-
-            // Получение метода Divide
-            MethodInfo method = myType.GetMethod("Divide");
-
-            // Вызов метода Divide с параметрами
-            object result = method.Invoke(obj, new object[] { a, b });
 
             // Отображение результата
-            outputLowLevelResult.Text = result.ToString();
+            outputLowLevelResult.Text = result;
         }
 
-        private void analyzeBuild_Click(object sender, EventArgs e)
+        private void buttonAnalyzeBuild_Click(object sender, EventArgs e)
         {
             string userCode = inputAnalyze.Text;
 
-            try
-            {
-                // Проверка синтаксиса
-                var syntaxTree = CSharpSyntaxTree.ParseText(userCode);
-                var root = syntaxTree.GetRoot();
+            // Вызов метода контроллера для анализа кода
+            var (isSuccessful, outputMessage) = CodeAnalysisController.AnalyzeCode(userCode);
 
-                // Проверка на наличие синтаксических ошибок
-                var diagnostics = syntaxTree.GetDiagnostics();
-                if (diagnostics.Any())
-                {
-                    foreach (var diagnostic in diagnostics)
-                    {
-                        var lineSpan = diagnostic.Location.GetLineSpan();
-                        int line = lineSpan.StartLinePosition.Line + 1; // Номер строки
-                        string errorMessage = $"Номер строки {line}. Номер ошибки: {diagnostic.Id}, '{diagnostic.GetMessage()}'";
-                        outputAnalyze.AppendText(errorMessage + Environment.NewLine);
-                    }
-
-                    isAnalysisSuccessful = false; // Если есть ошибки, анализ неуспешен
-                    return;
-                }
-
-                // Проверка на наличие цикла while
-                var whileStatement = root.DescendantNodes().OfType<WhileStatementSyntax>().FirstOrDefault();
-                if (whileStatement == null)
-                {
-                    MessageBox.Show(
-                        "Введите цикл while!",
-                        "Предупреждение",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
-
-                    isAnalysisSuccessful = false; // Если нет цикла while, анализ неуспешен
-                    return;
-                }
-
-                // Если ошибок нет
-                outputAnalyze.Text = "Ошибок не обнаружено";
-                isAnalysisSuccessful = true; // Успешный анализ
-            }
-            catch (Exception ex)
-            {
-                outputAnalyze.Text = "Произошла ошибка анализа: " + ex.Message;
-                isAnalysisSuccessful = false; // В случае исключения анализ неуспешен
-            }
+            outputAnalyze.Text = outputMessage;
+            isAnalysisSuccessful = isSuccessful;
         }
 
         private void buttonAnalyzeCheck_Click(object sender, EventArgs e)
@@ -131,102 +63,34 @@ namespace LaboratoryPractice
                 MessageBox.Show(
                     "Пожалуйста, сначала выполните успешную сборку, нажав на кнопку 'Сборка'.",
                     "Предупреждение",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
+                    MessageBoxButtons.OK,                    MessageBoxIcon.Warning
                 );
                 return;
             }
 
             string userCode = inputAnalyze.Text;
 
-            try
-            {
-                // Логика проверки выполнения цикла while (как в вашем коде)
-                var syntaxTree = CSharpSyntaxTree.ParseText(userCode);
-                var root = syntaxTree.GetRoot();
+            // Вызов метода контроллера для проверки цикла while
+            var (isValid, message) = WhileLoopController.CheckWhileLoop(userCode);
 
-                // Ищем цикл while
-                var whileStatement = root.DescendantNodes().OfType<WhileStatementSyntax>().FirstOrDefault();
-                if (whileStatement == null)
-                {
-                    MessageBox.Show(
-                        "Введите цикл while!",
-                        "Предупреждение",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
-                    return;
-                }
-
-                // Получаем условие цикла
-                var condition = whileStatement.Condition.ToString();
-
-                // Попробуем выполнить начальные действия и проверить условие
-                var initialStatements = root.DescendantNodes().OfType<LocalDeclarationStatementSyntax>();
-                Dictionary<string, int> variables = new Dictionary<string, int>();
-
-                foreach (var statement in initialStatements)
-                {
-                    var declaration = statement.Declaration;
-                    foreach (var variable in declaration.Variables)
-                    {
-                        // Парсим переменные вида "int i = 0;"
-                        if (variable.Initializer != null && int.TryParse(variable.Initializer.Value.ToString(), out int value))
-                        {
-                            variables[variable.Identifier.Text] = value;
-                        }
-                    }
-                }
-
-                // Проверяем условие
-                if (EvaluateCondition(condition, variables))
-                {
-                    MessageBox.Show(
-                        "Цикл выполнится хотя бы раз.",
-                        "Успешно",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "Цикл не выполнится ни разу.",
-                        "Успешно",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                }
-            }
-            catch (Exception ex)
+            if (isValid)
             {
                 MessageBox.Show(
-                    "Произошла ошибка анализа: " + ex.Message,
-                    "Ошибка",
+                    message,
+                    "Результат проверки",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
+                    MessageBoxIcon.Information
                 );
+                return;
             }
-        }
-
-        private bool EvaluateCondition(string condition, Dictionary<string, int> variables)
-        {
-            // Примитивный парсер условий для вида "i < 3"
-            foreach (var variable in variables)
+            else
             {
-                condition = condition.Replace(variable.Key, variable.Value.ToString());
-            }
-
-            try
-            {
-                // Выполняем условие с помощью DataTable
-                var table = new System.Data.DataTable();
-                var result = table.Compute(condition, string.Empty);
-                return Convert.ToBoolean(result);
-            }
-            catch
-            {
-                return false; // Если условие не удалось обработать
+                MessageBox.Show(
+                    message,
+                    "Ошибка проверки",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
             }
         }
 
@@ -246,6 +110,98 @@ namespace LaboratoryPractice
         {
             Form editRecordForm = new EditRecord();
             editRecordForm.Show();
+        }
+
+        private void buttonSelectFile_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    files.Clear();
+                    data.Rows.Clear();
+
+                    selectedFilePath = openFileDialog.FileName; // Сохраняем путь к выбранному файлу
+
+                    // Чтение всех строк из файла
+                    string[] lines = File.ReadAllLines(selectedFilePath);
+
+                    // Если массив строк пуст или содержит только пустые строки
+                    if (lines.Length == 0 || (lines.Length == 1 && string.IsNullOrWhiteSpace(lines[0])))
+                    {
+                        MessageBox.Show("Файл пустой или не содержит данных.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        selectedFilePath = string.Empty; // Сбрасываем путь, так как файл некорректен
+                        return;
+                    }
+
+                    // Проверка каждой строки на три поля и непустое содержимое
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        var line = lines[i];
+                        var fields = line.Split(';').Select(field => field.Trim()).ToArray(); // Убираем пробелы
+
+                        // Проверка на количество полей
+                        if (fields.Length != 3)
+                        {
+                            MessageBox.Show($"Ошибка в строке {i + 1}: Ожидалось 3 поля, но найдено {fields.Length}.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            selectedFilePath = string.Empty; // Сбрасываем путь, так как файл некорректен
+                            return;
+                        }
+
+                        // Проверка на пустое содержимое каждого поля
+                        for (int j = 0; j < fields.Length; j++)
+                        {
+                            if (string.IsNullOrWhiteSpace(fields[j]))
+                            {
+                                MessageBox.Show($"Ошибка в строке {i + 1}, поле {j + 1}: Поле пустое.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                selectedFilePath = string.Empty; // Сбрасываем путь, так как файл некорректен
+                                return;
+                            }
+                        }
+
+                        var file = new FileModel(fields[0], fields[1], fields[2]);
+                        files.Add(file);
+                    }
+
+                    // Если все строки валидны
+                    MessageBox.Show("Файл выбран.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void buttonOpenFileNotepad_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(selectedFilePath))
+            {
+                MessageBox.Show("Сначала выберите файл.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                System.Diagnostics.Process.Start("notepad.exe", selectedFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Не удалось открыть файл: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonOutputData_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(selectedFilePath))
+            {
+                MessageBox.Show("Сначала выберите файл.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            data.Rows.Clear();
+
+            foreach (var file in files)
+            {
+                data.Rows.Add(file.Address, file.AccessMode, file.AccessDate);
+            }
         }
     }
 }
