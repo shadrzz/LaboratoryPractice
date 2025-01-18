@@ -11,16 +11,16 @@ namespace LaboratoryPractice.Helpers
     {
         public bool IsSuccess { get; }
         public string ErrorMessage { get; }
-        public List<Models.Info> Files { get; }
+        public List<Models.InfoModel> Files { get; }
 
-        private FileProcessingResult(bool isSuccess, string errorMessage, List<Models.Info> files)
+        private FileProcessingResult(bool isSuccess, string errorMessage, List<Models.InfoModel> files)
         {
             IsSuccess = isSuccess;
             ErrorMessage = errorMessage;
-            Files = files ?? new List<Models.Info>();
+            Files = files ?? new List<Models.InfoModel>();
         }
 
-        public static FileProcessingResult Success(List<Models.Info> files)
+        public static FileProcessingResult Success(List<Models.InfoModel> files)
         {
             return new FileProcessingResult(true, string.Empty, files);
         }

@@ -11,8 +11,8 @@ namespace LaboratoryPractice
     public partial class MainForm : Form
     {
         private bool isAnalysisSuccessful = false;
-        private string selectedFilePath = string.Empty;
-        private List<Models.Info> files = new List<Models.Info>();
+        public string selectedFilePath = string.Empty;
+        public List<InfoModel> files = new List<InfoModel>();
 
         public MainForm()
         {
@@ -42,6 +42,8 @@ namespace LaboratoryPractice
 
             // Отображение результата
             outputLowLevelResult.Text = result;
+
+            AddMessageToLog($"Вызвана низкоуровневая функция.");
         }
 
         private void buttonAnalyzeBuild_Click(object sender, EventArgs e)
@@ -53,6 +55,8 @@ namespace LaboratoryPractice
 
             outputAnalyze.Text = outputMessage;
             isAnalysisSuccessful = isSuccessful;
+
+            AddMessageToLog($"Выполнена сборка анализатора.");
         }
 
         private void buttonAnalyzeCheck_Click(object sender, EventArgs e)
@@ -63,7 +67,7 @@ namespace LaboratoryPractice
                 MessageBox.Show(
                     "Пожалуйста, сначала выполните успешную сборку, нажав на кнопку 'Сборка'.",
                     "Предупреждение",
-                    MessageBoxButtons.OK,                    MessageBoxIcon.Warning
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning
                 );
                 return;
             }
@@ -81,6 +85,9 @@ namespace LaboratoryPractice
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
+
+                AddMessageToLog($"Выполнена проверка на условие анализатора.");
+
                 return;
             }
             else
@@ -102,13 +109,45 @@ namespace LaboratoryPractice
 
         private void buttonAddRecord_Click(object sender, EventArgs e)
         {
-            Form addRecordForm = new AddRecord();
+            if (string.IsNullOrEmpty(selectedFilePath))
+            {
+                MessageBox.Show("Сначала выберите файл.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Form addRecordForm = new AddRecordForm(this);
             addRecordForm.Show();
         }
 
         private void buttonEditRecord_Click(object sender, EventArgs e)
         {
-            Form editRecordForm = new EditRecord();
+            if (string.IsNullOrEmpty(selectedFilePath))
+            {
+                MessageBox.Show("Сначала выберите файл.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string lineNumberText = textBoxLineNumber.Text;
+
+            if (string.IsNullOrWhiteSpace(lineNumberText))
+            {
+                MessageBox.Show("Введите номер строки для редактирования.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!int.TryParse(lineNumberText, out int lineNumber))
+            {
+                MessageBox.Show("Номер строки должен быть числом.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (lineNumber < 1 || lineNumber > files.Count)
+            {
+                MessageBox.Show($"Номер строки должен быть в диапазоне от 1 до {files.Count}.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Form editRecordForm = new EditRecordForm(this, lineNumber);
             editRecordForm.Show();
         }
 
@@ -135,6 +174,7 @@ namespace LaboratoryPractice
                     files = result.Files;
 
                     MessageBox.Show($"Файл \"{Path.GetFileName(selectedFilePath)}\" выбран.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    AddMessageToLog($"Файл \"{Path.GetFileName(selectedFilePath)}\" выбран.");
                 }
             }
         }
@@ -155,6 +195,20 @@ namespace LaboratoryPractice
             {
                 MessageBox.Show($"Не удалось открыть файл: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            AddMessageToLog($"Файл \"{Path.GetFileName(selectedFilePath)}\" открыт в блокноте.");
+        }
+
+        public void OutputData()
+        {
+            data.Rows.Clear();
+
+            foreach (var file in files)
+            {
+                data.Rows.Add(file.Address, file.AccessMode, file.AccessDate);
+            }
+
+            AddMessageToLog($"Файл \"{Path.GetFileName(selectedFilePath)}\" выведен на экран.");
         }
 
         private void buttonOutputData_Click(object sender, EventArgs e)
@@ -165,12 +219,46 @@ namespace LaboratoryPractice
                 return;
             }
 
-            data.Rows.Clear();
+            OutputData();
+        }
 
-            foreach (var file in files)
+        private void buttonDeleteRecord_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(selectedFilePath))
             {
-                data.Rows.Add(file.Address, file.AccessMode, file.AccessDate);
+                MessageBox.Show("Сначала выберите файл.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            string lineNumberText = textBoxLineNumber.Text;
+
+            if (string.IsNullOrWhiteSpace(lineNumberText))
+            {
+                MessageBox.Show("Введите номер строки для редактирования.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!int.TryParse(lineNumberText, out int lineNumber))
+            {
+                MessageBox.Show("Номер строки должен быть числом.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (lineNumber < 1 || lineNumber > files.Count)
+            {
+                MessageBox.Show($"Номер строки должен быть в диапазоне от 1 до {files.Count}.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            FileController.RemoveRecordFromCsv(selectedFilePath, lineNumber);
+            files.Remove(files[lineNumber - 1]);
+            AddMessageToLog($"Из файла \"{Path.GetFileName(selectedFilePath)}\" была удалена строка под номером: {lineNumber}.");
+            OutputData();
+        }
+
+        public void AddMessageToLog(string message)
+        {
+            log.AppendText($"{message}\n");
         }
     }
 }

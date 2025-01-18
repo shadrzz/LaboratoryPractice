@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             groupBoxWorkWithFile = new GroupBox();
+            labelLineNumber = new Label();
+            textBoxLineNumber = new TextBox();
             data = new DataGridView();
             address = new DataGridViewTextBoxColumn();
             accessMode = new DataGridViewTextBoxColumn();
@@ -52,14 +54,19 @@
             outputAnalyze = new RichTextBox();
             inputAnalyze = new RichTextBox();
             buttonAnalyzeBuild = new Button();
+            groupBoxLog = new GroupBox();
+            log = new RichTextBox();
             groupBoxWorkWithFile.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)data).BeginInit();
             groupBoxLowLevel.SuspendLayout();
             groupBoxAnalyze.SuspendLayout();
+            groupBoxLog.SuspendLayout();
             SuspendLayout();
             // 
             // groupBoxWorkWithFile
             // 
+            groupBoxWorkWithFile.Controls.Add(labelLineNumber);
+            groupBoxWorkWithFile.Controls.Add(textBoxLineNumber);
             groupBoxWorkWithFile.Controls.Add(data);
             groupBoxWorkWithFile.Controls.Add(buttonDeleteRecord);
             groupBoxWorkWithFile.Controls.Add(buttonEditRecord);
@@ -70,10 +77,28 @@
             groupBoxWorkWithFile.Location = new Point(43, 21);
             groupBoxWorkWithFile.Name = "groupBoxWorkWithFile";
             groupBoxWorkWithFile.Padding = new Padding(10);
-            groupBoxWorkWithFile.Size = new Size(402, 387);
+            groupBoxWorkWithFile.Size = new Size(402, 450);
             groupBoxWorkWithFile.TabIndex = 0;
             groupBoxWorkWithFile.TabStop = false;
             groupBoxWorkWithFile.Text = "Работа с файлом";
+            // 
+            // labelLineNumber
+            // 
+            labelLineNumber.AutoSize = true;
+            labelLineNumber.Location = new Point(210, 283);
+            labelLineNumber.Margin = new Padding(0);
+            labelLineNumber.Name = "labelLineNumber";
+            labelLineNumber.Size = new Size(133, 15);
+            labelLineNumber.TabIndex = 10;
+            labelLineNumber.Text = "Введите номер строки:";
+            // 
+            // textBoxLineNumber
+            // 
+            textBoxLineNumber.Location = new Point(211, 299);
+            textBoxLineNumber.Margin = new Padding(0, 10, 0, 0);
+            textBoxLineNumber.Name = "textBoxLineNumber";
+            textBoxLineNumber.Size = new Size(170, 23);
+            textBoxLineNumber.TabIndex = 10;
             // 
             // data
             // 
@@ -105,27 +130,29 @@
             // 
             // buttonDeleteRecord
             // 
-            buttonDeleteRecord.Location = new Point(19, 325);
+            buttonDeleteRecord.Location = new Point(212, 372);
             buttonDeleteRecord.Margin = new Padding(3, 10, 3, 0);
             buttonDeleteRecord.Name = "buttonDeleteRecord";
-            buttonDeleteRecord.Size = new Size(362, 30);
+            buttonDeleteRecord.Size = new Size(169, 30);
             buttonDeleteRecord.TabIndex = 10;
-            buttonDeleteRecord.Text = "Удалить запись из БД";
+            buttonDeleteRecord.Text = "Удалить запись";
             buttonDeleteRecord.UseVisualStyleBackColor = true;
+            buttonDeleteRecord.Click += buttonDeleteRecord_Click;
             // 
             // buttonEditRecord
             // 
-            buttonEditRecord.Location = new Point(212, 285);
+            buttonEditRecord.Location = new Point(211, 332);
             buttonEditRecord.Margin = new Padding(3, 10, 3, 0);
             buttonEditRecord.Name = "buttonEditRecord";
             buttonEditRecord.Size = new Size(170, 30);
             buttonEditRecord.TabIndex = 9;
-            buttonEditRecord.Text = "Изменить запись из БД";
+            buttonEditRecord.Text = "Изменить запись";
             buttonEditRecord.UseVisualStyleBackColor = true;
+            buttonEditRecord.Click += buttonEditRecord_Click;
             // 
             // buttonAddRecord
             // 
-            buttonAddRecord.Location = new Point(19, 285);
+            buttonAddRecord.Location = new Point(20, 292);
             buttonAddRecord.Margin = new Padding(3, 10, 3, 0);
             buttonAddRecord.Name = "buttonAddRecord";
             buttonAddRecord.Size = new Size(170, 30);
@@ -176,7 +203,7 @@
             groupBoxLowLevel.Controls.Add(labelLowLevelSecond);
             groupBoxLowLevel.Controls.Add(inputLowLevelFirst);
             groupBoxLowLevel.Controls.Add(labelLowLevelFirst);
-            groupBoxLowLevel.Location = new Point(255, 431);
+            groupBoxLowLevel.Location = new Point(43, 494);
             groupBoxLowLevel.Margin = new Padding(3, 20, 3, 3);
             groupBoxLowLevel.Name = "groupBoxLowLevel";
             groupBoxLowLevel.Padding = new Padding(10, 20, 10, 10);
@@ -258,7 +285,7 @@
             groupBoxAnalyze.Location = new Point(479, 21);
             groupBoxAnalyze.Name = "groupBoxAnalyze";
             groupBoxAnalyze.Padding = new Padding(10);
-            groupBoxAnalyze.Size = new Size(402, 387);
+            groupBoxAnalyze.Size = new Size(402, 450);
             groupBoxAnalyze.TabIndex = 9;
             groupBoxAnalyze.TabStop = false;
             groupBoxAnalyze.Text = "Анализатор";
@@ -305,11 +332,33 @@
             buttonAnalyzeBuild.UseVisualStyleBackColor = true;
             buttonAnalyzeBuild.Click += buttonAnalyzeBuild_Click;
             // 
+            // groupBoxLog
+            // 
+            groupBoxLog.Controls.Add(log);
+            groupBoxLog.Location = new Point(479, 494);
+            groupBoxLog.Margin = new Padding(3, 20, 3, 3);
+            groupBoxLog.Name = "groupBoxLog";
+            groupBoxLog.Padding = new Padding(10, 20, 10, 10);
+            groupBoxLog.Size = new Size(402, 197);
+            groupBoxLog.TabIndex = 10;
+            groupBoxLog.TabStop = false;
+            groupBoxLog.Text = "Логирование";
+            // 
+            // log
+            // 
+            log.Location = new Point(13, 23);
+            log.Name = "log";
+            log.ReadOnly = true;
+            log.Size = new Size(376, 161);
+            log.TabIndex = 0;
+            log.Text = "";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(928, 660);
+            ClientSize = new Size(928, 737);
+            Controls.Add(groupBoxLog);
             Controls.Add(groupBoxAnalyze);
             Controls.Add(groupBoxLowLevel);
             Controls.Add(groupBoxWorkWithFile);
@@ -317,10 +366,12 @@
             Name = "MainForm";
             Text = " ";
             groupBoxWorkWithFile.ResumeLayout(false);
+            groupBoxWorkWithFile.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)data).EndInit();
             groupBoxLowLevel.ResumeLayout(false);
             groupBoxLowLevel.PerformLayout();
             groupBoxAnalyze.ResumeLayout(false);
+            groupBoxLog.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -351,5 +402,9 @@
         private DataGridViewTextBoxColumn address;
         private DataGridViewTextBoxColumn accessMode;
         private DataGridViewTextBoxColumn accessDate;
+        private Label labelLineNumber;
+        private TextBox textBoxLineNumber;
+        private GroupBox groupBoxLog;
+        private RichTextBox log;
     }
 }

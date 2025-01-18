@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\EditRecord.cs">
+    <Compile Update="Views\EditRecordForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

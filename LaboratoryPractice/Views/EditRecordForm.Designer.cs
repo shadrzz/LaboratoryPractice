@@ -1,6 +1,6 @@
 ﻿namespace LaboratoryPractice.Views
 {
-    partial class EditRecord
+    partial class EditRecordForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            textBox1 = new TextBox();
+            address = new TextBox();
             label2 = new Label();
-            textBox3 = new TextBox();
+            accessDate = new TextBox();
             label3 = new Label();
-            comboBox1 = new ComboBox();
-            button7 = new Button();
+            accessMode = new ComboBox();
+            buttonEditRecord = new Button();
             SuspendLayout();
             // 
             // label1
@@ -47,12 +47,12 @@
             label1.TabIndex = 0;
             label1.Text = "Адрес ресурса";
             // 
-            // textBox1
+            // address
             // 
-            textBox1.Location = new Point(200, 50);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(124, 23);
-            textBox1.TabIndex = 1;
+            address.Location = new Point(200, 50);
+            address.Name = "address";
+            address.Size = new Size(124, 23);
+            address.TabIndex = 1;
             // 
             // label2
             // 
@@ -64,13 +64,13 @@
             label2.TabIndex = 2;
             label2.Text = "Режим доступа";
             // 
-            // textBox3
+            // accessDate
             // 
-            textBox3.Location = new Point(200, 149);
-            textBox3.Margin = new Padding(0, 25, 0, 0);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(124, 23);
-            textBox3.TabIndex = 5;
+            accessDate.Location = new Point(200, 149);
+            accessDate.Margin = new Padding(0, 25, 0, 0);
+            accessDate.Name = "accessDate";
+            accessDate.Size = new Size(124, 23);
+            accessDate.TabIndex = 5;
             // 
             // label3
             // 
@@ -82,39 +82,41 @@
             label3.TabIndex = 4;
             label3.Text = "Дата доступа";
             // 
-            // comboBox1
+            // accessMode
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Свободный", "Закрытый" });
-            comboBox1.Location = new Point(200, 101);
-            comboBox1.Margin = new Padding(0, 25, 0, 0);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(124, 23);
-            comboBox1.TabIndex = 6;
+            accessMode.DropDownStyle = ComboBoxStyle.DropDownList;
+            accessMode.FormattingEnabled = true;
+            accessMode.Items.AddRange(new object[] { "Свободный", "Закрытый" });
+            accessMode.Location = new Point(200, 101);
+            accessMode.Margin = new Padding(0, 25, 0, 0);
+            accessMode.Name = "accessMode";
+            accessMode.Size = new Size(124, 23);
+            accessMode.TabIndex = 6;
             // 
-            // button7
+            // buttonEditRecord
             // 
-            button7.Location = new Point(126, 211);
-            button7.Margin = new Padding(0);
-            button7.Name = "button7";
-            button7.Size = new Size(108, 33);
-            button7.TabIndex = 7;
-            button7.Text = "Изменить";
-            button7.UseVisualStyleBackColor = true;
+            buttonEditRecord.Location = new Point(126, 211);
+            buttonEditRecord.Margin = new Padding(0);
+            buttonEditRecord.Name = "buttonEditRecord";
+            buttonEditRecord.Size = new Size(108, 33);
+            buttonEditRecord.TabIndex = 7;
+            buttonEditRecord.Text = "Изменить";
+            buttonEditRecord.UseVisualStyleBackColor = true;
+            buttonEditRecord.Click += buttonEditRecord_Click;
             // 
-            // EditRecord
+            // EditRecordForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(377, 269);
-            Controls.Add(button7);
-            Controls.Add(comboBox1);
-            Controls.Add(textBox3);
+            Controls.Add(buttonEditRecord);
+            Controls.Add(accessMode);
+            Controls.Add(accessDate);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(textBox1);
+            Controls.Add(address);
             Controls.Add(label1);
-            Name = "EditRecord";
+            Name = "EditRecordForm";
             Padding = new Padding(50, 50, 50, 25);
             Text = "Изменить запись";
             ResumeLayout(false);
@@ -124,11 +126,11 @@
         #endregion
 
         private Label label1;
-        private TextBox textBox1;
+        private TextBox address;
         private Label label2;
-        private TextBox textBox3;
+        private TextBox accessDate;
         private Label label3;
-        private ComboBox comboBox1;
-        private Button button7;
+        private ComboBox accessMode;
+        private Button buttonEditRecord;
     }
 }
