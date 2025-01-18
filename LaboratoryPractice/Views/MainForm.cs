@@ -1,10 +1,6 @@
-using System.Reflection;
-using System.Windows.Forms;
 using LaboratoryPractice.Controllers;
 using LaboratoryPractice.Models;
 using LaboratoryPractice.Views;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace LaboratoryPractice
 {

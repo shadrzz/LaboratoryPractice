@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using LaboratoryPractice.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace LaboratoryPractice;
 

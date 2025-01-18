@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace LaboratoryPractice.Models;
+﻿namespace LaboratoryPractice.Models;
 
 public partial class InfoModel
 {

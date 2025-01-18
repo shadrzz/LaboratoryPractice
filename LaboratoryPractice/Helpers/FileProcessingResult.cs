@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LaboratoryPractice.Models;
-
-namespace LaboratoryPractice.Helpers
+﻿namespace LaboratoryPractice.Helpers
 {
     public class FileProcessingResult
     {

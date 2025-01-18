@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LaboratoryPractice.Models;
-using LaboratoryPractice.Helpers;
+﻿using LaboratoryPractice.Helpers;
 
 namespace LaboratoryPractice.Controllers
 {
