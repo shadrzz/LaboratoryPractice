@@ -12,7 +12,7 @@ namespace LaboratoryPractice
     {
         private bool isAnalysisSuccessful = false;
         private string selectedFilePath = string.Empty;
-        private List<FileModel> files = new List<FileModel>();
+        private List<Models.Info> files = new List<Models.Info>();
 
         public MainForm()
         {
@@ -119,53 +119,22 @@ namespace LaboratoryPractice
                 openFileDialog.Filter = "CSV files (*.csv)|*.csv";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    files.Clear();
                     data.Rows.Clear();
 
-                    selectedFilePath = openFileDialog.FileName; // Сохраняем путь к выбранному файлу
+                    selectedFilePath = openFileDialog.FileName;
 
-                    // Чтение всех строк из файла
-                    string[] lines = File.ReadAllLines(selectedFilePath);
+                    var result = FileController.ProcessCsvFile(selectedFilePath);
 
-                    // Если массив строк пуст или содержит только пустые строки
-                    if (lines.Length == 0 || (lines.Length == 1 && string.IsNullOrWhiteSpace(lines[0])))
+                    if (!result.IsSuccess)
                     {
-                        MessageBox.Show("Файл пустой или не содержит данных.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        selectedFilePath = string.Empty; // Сбрасываем путь, так как файл некорректен
+                        MessageBox.Show(result.ErrorMessage, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        selectedFilePath = string.Empty;
                         return;
                     }
 
-                    // Проверка каждой строки на три поля и непустое содержимое
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        var line = lines[i];
-                        var fields = line.Split(';').Select(field => field.Trim()).ToArray(); // Убираем пробелы
+                    files = result.Files;
 
-                        // Проверка на количество полей
-                        if (fields.Length != 3)
-                        {
-                            MessageBox.Show($"Ошибка в строке {i + 1}: Ожидалось 3 поля, но найдено {fields.Length}.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            selectedFilePath = string.Empty; // Сбрасываем путь, так как файл некорректен
-                            return;
-                        }
-
-                        // Проверка на пустое содержимое каждого поля
-                        for (int j = 0; j < fields.Length; j++)
-                        {
-                            if (string.IsNullOrWhiteSpace(fields[j]))
-                            {
-                                MessageBox.Show($"Ошибка в строке {i + 1}, поле {j + 1}: Поле пустое.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                selectedFilePath = string.Empty; // Сбрасываем путь, так как файл некорректен
-                                return;
-                            }
-                        }
-
-                        var file = new FileModel(fields[0], fields[1], fields[2]);
-                        files.Add(file);
-                    }
-
-                    // Если все строки валидны
-                    MessageBox.Show("Файл выбран.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Файл \"{Path.GetFileName(selectedFilePath)}\" выбран.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
