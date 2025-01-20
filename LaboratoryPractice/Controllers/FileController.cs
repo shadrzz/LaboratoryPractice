@@ -10,11 +10,6 @@ namespace LaboratoryPractice.Controllers
             {
                 string[] lines = File.ReadAllLines(filePath);
 
-                if (lines.Length == 0 || (lines.Length == 1 && string.IsNullOrWhiteSpace(lines[0])))
-                {
-                    return FileProcessingResult.Fail("Файл пустой или не содержит данных.");
-                }
-
                 List<Models.InfoModel> files = new List<Models.InfoModel>();
 
                 for (int i = 0; i < lines.Length; i++)
